@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: #4770b7;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+button {
+    margin-bottom: 15px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #7babff;
+    font-size: 1.3em;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    outline: none transparent;
+    transition: 300ms;
+}
+
+.bigbutton {
+    font-size: 2em;
+}
+
+button:hover {
+    outline: 5px solid #075df2;
+    transform: scale(1.1);
+}
+
+button:focus {
+    transition: 50ms;
+    color: #075df2;
+    background-color: #075df2;
+    outline: none;
+    transform: scale(0.6);
+}
+
+.icon {
+    background-color: #075df2;
+    border: outset 5px #005eff;
+    color: white;
+    border-radius: 10px;
+    width: max-content;
+}
+
+body.hasdasidebarbar .content,
+body.hasdasidebarbar .icon {
+    margin-left: 250px;
+}
+
+.modgridd {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    height: 100%;
+    width:80%;
+    gap: 15px;
+}
+
+.mod {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    color: white;
+    border: inset 2px black;
+    transition: 150ms;
+}
+
+.mod h1 {
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 2em;
+    overflow-wrap: break-word;
+    word-break: break-all;
+    user-select: none;
+}
+
+.mod img {
+    width: 200px;
+    height: 200px;
+    align-self: center;
+    pointer-events: none;
+    user-select: none;
+    border-radius: 10px;
+}
+
+.mod:hover {
+    transform: scale(1.05);
+    z-index: 1000;
+    border: solid 5px #7babff;
+    background-color: #3c69b6;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: underline;
+    color: aqua;
+}
+
+.dasidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.dasidebar h2 {
+    font-size: 1.3em;
+    margin: 0 0 10px 0;
+    text-align: left;
+}
+
+.dasidebarfilter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: #7babff;
+    color: #08214a;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 0.95em;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 150ms;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    margin-bottom: 0;
+}
+
+.dasidebarfilter:hover {
+    transform: scale(1.03);
+    border-color: #075df2;
+    outline: none;
+}
+
+.dasidebarfilter.active {
+    background-color: #075df2;
+    color: white;
+}
+
+.dasidebarfilter:focus {
+    color: #08214a !important;
+    background-color: #7babff !important;
+    transform: scale(1) !important;
+    outline: none;
+}
+
+.dasidebarfilter.active:focus {
+    color: white !important;
+    background-color: #075df2 !important;
+}
+
+.dasidebarfilter.buttontoreverse.active {
+    background-color: #ff5f5f;
+}
+
+.dasidebarfilter.buttontoreverse.active:focus {
+    background-color: #ff5f5f !important;
+}
+
+#searchformod {
+    width:500px;
+    height:60px;
+    font-size: 1.1em;
+    outline: none;
+}
+
+#searchformod {
+    outline: none;
+    border: 5px solid lime;
+}
+
+body.godark {
+    background-color: #061433;
+    color:white;
+}
+
+body.godark .content {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.godark button {
+    background-color: #112f5f;
+    color: #dce6ff;
+}
+
+body.godark button:hover {
+    outline-color: #4d8dff;
+}
+
+body.godark button:focus {
+    color: #4d8dff;
+    background-color: #142033;
+}
+
+body.godark .icon {
+    background-color: #142033;
+    border-color: #1f3b6e;
+}
+
+body.godark .mod {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: #333;
+    color: #dce6ff;
+}
+
+body.godark .mod h1 {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+body.godark .mod:hover {
+    border-color: #4d8dff;
+    background-color: #1c2e4d;
+}
+
+body.godark a {
+    color: #66d9ff;
+}
+
+body.godark .dasidebar {
+    background-color: rgba(9, 12, 37, 0.85);
+}
+
+body.godark .dasidebarfilter {
+    background-color: #274472;
+    color: #dce6ff;
+}
+
+body.godark .dasidebarfilter:hover {
+    border-color: #4d8dff;
+}
+
+body.godark .dasidebarfilter.active {
+    background-color: #4d8dff;
+    color: #0a1420;
+}
+
+body.godark .dasidebarfilter:focus {
+    color: #dce6ff !important;
+    background-color: #274472 !important;
+}
+
+body.godark .dasidebarfilter.active:focus {
+    color: #0a1420 !important;
+    background-color: #4d8dff !important;
+}
+
+body.godark .dasidebarfilter.buttontoreverse.active {
+    background-color: #b33a3a;
+}
+
+body.godark .dasidebarfilter.buttontoreverse.active:focus {
+    background-color: #b33a3a !important;
+}
+
+body.godark #searchformod {
+    border-color: #4d8dff;
+    background-color: #142033;
+    color: #dce6ff;
+}
