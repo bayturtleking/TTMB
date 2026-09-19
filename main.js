@@ -19,6 +19,7 @@ const handpicked = blablaparam.get('hand');
 if (handpicked && handpicked === "y") {
     document.body.classList.remove("hasdasidebarbar");
     document.getElementById("titleofpag").textContent = "Recommended & Approved Mods";
+    document.getElementById("searchformod").placeholder = "Search TTMB approved mods";
     document.querySelectorAll('.hideinaprov').forEach(function (theob) {
         theob.style.display = 'none';
     });
