@@ -3,6 +3,7 @@
 
 <head>
     <title>TABS mod browser</title>
+    <link rel="icon" href="/favicon.ico">
     <meta property="og:title" content="Turtle's TABS Mod Browser" />
     <meta property="og:description"
         content="Instantly see all TABS mods, apply filters, and hide low quality unit mods " />
@@ -13,13 +14,17 @@
 
 <body>
     <main class="content">
-        <h2 style="margin-bottom: 0;">Turtle's</h2>
-        <h1 style="margin-top: 0;">TABS mod browser</h1>
+        <img class="nodragme" src="/assets/Icon128.png">
+        <h2 class="textgradd nodragme"
+            style="--colorfortegrad: linear-gradient(to right, #00ff1e, #002fff); margin-bottom: 0;">Turtle's</h2>
+        <h1 class="textgradd nodragme"
+            style="--colorfortegrad: linear-gradient(to right, #d86767, #6b83ed); margin-top: 0;">TABS mod browser</h1>
         <h2>See real mods instantly, ignores nonfunctional garbage</h2>
         <p>This website was made because of the recurring "unit slop" problem on Thunderstore. This uses the
             Thunderstore API, but attempts to ignore all nonfunctional and unit maker mods.</p>
         <a href="/mods?t=y"><button class="bigbutton">Browse mods</button></a>
-        <button onclick="toggledarkmode();">Toggle Darkmode</button>
+        <a href="/mods?t=y&hand=y"><button class="bigbutton">TTMB Approved</button></a>
+        <a onclick="toggledarkmode();">Toggle Darkmode</a>
     </main>
     <script defer src="/global.js"></script>
 </body>

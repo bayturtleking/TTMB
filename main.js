@@ -8,10 +8,24 @@ let modpackmodscaught = 0;
 let whitelistofunitslop = new Set();
 let blacklistofunitslop = new Set();
 let blacklistofbadrep = new Set();
+let setofapprovedmods = new Set();
 let filteredmodscurrent = [];
 let modsshown = 0;
 const howmanycookies = 24;
 let sentobserv = null;
+const blablaparam = new URLSearchParams(window.location.search);
+const handpicked = blablaparam.get('hand');
+
+if (handpicked && handpicked === "y") {
+    document.body.classList.remove("hasdasidebarbar");
+    document.getElementById("titleofpag").textContent = "Recommended & Approved Mods";
+    document.querySelectorAll('.hideinaprov').forEach(function (theob) {
+        theob.style.display = 'none';
+    });
+    document.querySelectorAll('.showinaprov').forEach(function (theob) {
+        theob.style.display = 'block';
+    });
+}
 
 async function getdalists(maiurl, jsdeurl) {
     try {
@@ -40,7 +54,8 @@ async function getunitacceptablelist() {
     );
 }
 
-async function getunitblacklist() {    return getdalists(
+async function getunitblacklist() {
+    return getdalists(
         'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/lowqualityunits-blacklist.json',
         'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/lowqualityunits-blacklist.json'
     );
@@ -53,7 +68,14 @@ async function getbadrepblacklist() {
     );
 }
 
-const modcachescheme = 2; // bump this whenever the shape of a mod object changes so old localStorage caches get thrown out instead of silently missing new fields
+async function getapprovedlis() {
+    return getdalists(
+        'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/ttmb-approved.json',
+        'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/ttmb-approved.json'
+    );
+}
+
+const modcachescheme = 2;  // change whenever mod obj shape changes so it has to get new cache
 async function getmods() {
     const cachedcurrent = localStorage.getItem('modcachee');
     if (cachedcurrent) {
@@ -112,6 +134,12 @@ async function getmods() {
 }
 let cacheformods = [];
 function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack) {
+    if (handpicked && handpicked === "y") {
+        if (!setofapprovedmods.has(mod.nameofmod) || mod.isdepre) {
+            return "notapproved-ordepre";
+        }
+        return null;
+    }
     if (blacklistofbadrep.has(mod.nameofmod)) {
         return "badrep";
     }
@@ -193,7 +221,6 @@ function showthemods(mods) {
     });
     const oldsent = document.getElementById('thesentofmods');
     if (oldsent) oldsent.remove();
-    const blablaparam = new URLSearchParams(window.location.search);
     const dounitfilters = blablaparam.get('all');
     const showdepre = blablaparam.get('d');
     const shownonf = blablaparam.get('nf');
@@ -288,15 +315,17 @@ function dofilters() {
 (async function blablabla() {
     try {
         dofilters();
-        const [mods, dawhitelist, unitblacklist, badrepblacklist] = await Promise.all([
+        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo] = await Promise.all([
             getmods(),
             getunitacceptablelist(),
             getunitblacklist(),
-            getbadrepblacklist()
+            getbadrepblacklist(),
+            getapprovedlis()
         ]);
         whitelistofunitslop = dawhitelist;
         blacklistofunitslop = unitblacklist;
         blacklistofbadrep = badrepblacklist;
+        setofapprovedmods = approvedlistofmo;
         cacheformods = mods;
         showthemods(cacheformods);
         const searchbarr = document.getElementById('searchformod');

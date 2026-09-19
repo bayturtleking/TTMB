@@ -3,6 +3,7 @@
 
 <head>
     <title>TABS mod browser</title>
+    <link rel="icon" href="/favicon.ico">
     <meta property="og:title" content="Turtle's TABS Mod Browser" />
     <meta property="og:description"
         content="Instantly see all TABS mods, apply filters, and hide low quality unit mods " />
@@ -12,7 +13,7 @@
 </head>
 
 <body class="hasdasidebarbar">
-    <div class="dasidebar">
+    <div id="dasidebar" class="dasidebar hideinaprov">
         <h2>Filters</h2>
         <button class="dasidebarfilter" data-param="all" type="button">
             Include low quality unit mods
@@ -33,20 +34,25 @@
             Show only hidden mods
         </button>
     </div>
-    <h1 class="icon">T T M B</h1>
+    <div class="icon2">
+        <img src="/assets/Icon128.png">
+        <h1 class="icon">T T M B</h1>
+        <h1 class="showinaprov" style="margin-left: 10px; display:none;">Approved</h1>
+    </div>
     <main class="content">
-        <h1>TABS Mods</h1>
+        <h1 id="titleofpag">TABS Mods</h1>
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
             <input id="searchformod" type="search" placeholder="Search for specific mods"
                 style="flex:1;min-width:220px;padding:6px;border-radius:4px;border:1px solid #ccc;" />
         </div>
-        <div style="position: sticky;">
+        <div class="hideinaprov" style="position: sticky;">
             <h3><span style="color:gold"><span id="unitmodshid">0</span> unit mods hidden</span>, <span
                     style="color:red"><span id="nonfunctmods">0</span> likely nonfunctional mods hidden</span>, <span
-                    style="color:rgb(31, 5, 81)" id="deprecmodwhole"><span id="deprecmodshid">0</span> deprecated mods hidden</span>, <span
-                    style="color:black;"><span id="nsfwmodshid">0</span> NSFW mods hidden</span></h3>
+                    style="color:rgb(31, 5, 81)" id="deprecmodwhole"><span id="deprecmodshid">0</span> deprecated mods
+                    hidden</span>, <span style="color:black;"><span id="nsfwmodshid">0</span> NSFW mods hidden</span>
+            </h3>
         </div>
-        <p style="margin:0;">(for above) one mod may be hidden multiple times for different reasons</p>
+        <p class="hideinaprov" style="margin:0;">(for above) one mod may be hidden multiple times for different reasons</p>
         <p>Note: since we are using the Thunderstore API, mods may not appear if we or you are being rate-limited</p>
         <div id="themods" class="modgridd">
             <div id="modtemplatee" class="mod">
