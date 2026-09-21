@@ -13,8 +13,7 @@ let filteredmodscurrent = [];
 let modsshown = 0;
 const howmanycookies = 24;
 let sentobserv = null;
-const blablaparam = new URLSearchParams(window.location.search);
-const handpicked = blablaparam.get('hand');
+const handpicked = new URLSearchParams(window.location.search).get('hand');
 
 if (handpicked && handpicked === "y") {
     document.body.classList.remove("hasdasidebarbar");
@@ -222,12 +221,13 @@ function showthemods(mods) {
     });
     const oldsent = document.getElementById('thesentofmods');
     if (oldsent) oldsent.remove();
-    const dounitfilters = blablaparam.get('all');
-    const showdepre = blablaparam.get('d');
-    const shownonf = blablaparam.get('nf');
-    const shownsfw = blablaparam.get('n');
-    const domodpack = blablaparam.get('mp');
-    const dorev = blablaparam.get('re');
+    const currentparams = new URLSearchParams(window.location.search);
+    const dounitfilters = currentparams.get('all');
+    const showdepre = currentparams.get('d');
+    const shownonf = currentparams.get('nf');
+    const shownsfw = currentparams.get('n');
+    const domodpack = currentparams.get('mp');
+    const dorev = currentparams.get('re');
     filteredmodscurrent = [];
     mods.forEach(mod => {
         const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack);
