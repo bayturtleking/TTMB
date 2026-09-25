@@ -1,4 +1,7 @@
 function showdarkm() {
+    if (localStorage.getItem("isdarkm") === null) {
+        localStorage.setItem("isdarkm", 'y');
+    }
     if (localStorage.getItem("isdarkm") === 'y') {
         document.body.classList.add('godark');
         if (document.getElementById("deprecmodshid")) {
