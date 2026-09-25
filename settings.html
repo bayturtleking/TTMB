@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TABS mod browser settings</title>
+    <link rel="icon" href="/favicon.ico">
+    <link href="/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="content settingshokd">
+        <h1>Settings</h1>
+        <label class="settingthing">
+            <input id="showmoddescrip" type="checkbox">
+            Show mod descriptions
+        </label>
+        <label class="settingthing">
+            <input id="showmodauth" type="checkbox">
+            Show mod creator/author
+        </label>
+        <label class="settingthing">
+            <select id="modsize" onchange="settingscri_modsize()">
+                <option value="msiz-s">Small Rectangle</option>
+                <option value="msiz-m">Medium Rectangle</option>
+                <option value="msiz-l">Large Rectangle</option>
+                <option value="msiz-card">Default Style</option>
+            </select>
+            Mod listing style/size
+        </label>
+        <a href="/index.html">Go home</a>
+    </div>
+    <script defer src="/global.js"></script>
+</body>
+
+</html>

@@ -70,6 +70,41 @@ body.hasdasidebarbar .icon2 {
     gap: 15px;
 }
 
+.modgridd.msiz-l {
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+}
+
+.modgridd.msiz-m {
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+}
+
+.modgridd.msiz-card {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.modgridd.msiz-card .mod {
+    height:600px !important;
+}
+
+.modgridd.msiz-card .mod img {
+    width:320px;
+    height:320px;
+}
+
+.modgridd.msiz-card .mod .moddescrip {
+    font-size: 1.5em;
+}
+
+.modauth {
+    margin-top: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.modgridd.hidemodcreato .mod .modauth {
+    display: none;
+}
+
 .mod {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -80,6 +115,8 @@ body.hasdasidebarbar .icon2 {
     border: inset 2px black;
     transition: 150ms;
 }
+
+
 
 .mod h1 {
     background-color: rgba(0, 0, 0, 0.2);
@@ -96,6 +133,50 @@ body.hasdasidebarbar .icon2 {
     pointer-events: none;
     user-select: none;
     border-radius: 10px;
+}
+
+.moddescrip {
+    margin: 10px 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.mod h1 {
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+}
+
+.hidemoddescrip .moddescrip {
+    display: none;
+}
+
+body:not(.hidemoddescrip) .mod {
+    height: 390px;
+}
+
+.settingslink {
+    margin-left: 15px;
+}
+
+.settingshokd {
+    max-width: 600px;
+    margin: 30px auto;
+    gap: 15px;
+}
+
+.settingthing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+}
+
+.settingthing input {
+    width: 18px;
+    height: 18px;
 }
 
 .mod:hover {
@@ -220,6 +301,10 @@ body.godark {
     color: white;
 }
 
+body.godark .modgridd .mod {
+    background: rgba(255, 255, 255, 0.05);
+}
+
 body.godark .content {
     background-color: rgba(255, 255, 255, 0.05);
 }
@@ -251,6 +336,10 @@ body.godark .mod {
 
 body.godark .mod h1 {
     background-color: rgba(255, 255, 255, 0.04);
+}
+
+body.godark .moddescrip {
+    color: #dce6ff;
 }
 
 body.godark .mod:hover {
@@ -305,6 +394,14 @@ body.godark .dasidebarfilter.buttontoreverse.active {
 
 body.godark .dasidebarfilter.buttontoreverse.active:focus {
     background-color: #b33a3a !important;
+}
+
+select {
+    width: 220px;
+    text-align: center;
+    background-color: #112f5f;
+    color: white;
+    height: 50px;
 }
 
 body.godark #searchformod {

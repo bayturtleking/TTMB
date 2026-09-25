@@ -113,7 +113,6 @@ async function getmods() {
         const whatlinkshouldbe = "https://thunderstore.io" + (thismod.community_listings?.[0]?.url_path || `/c/totally-accurate-battle-simulator/p/${whomade}/${nameofmod}/`);
         const depslist = (curversion && Array.isArray(curversion.dependencies)) ? curversion.dependencies : (Array.isArray(thismod.dependencies) ? thismod.dependencies : []);
         const hasbepinex = depslist.some(depp => /bepinex/i.test(depp));
-
         const categoriesrawww = thismod.categories || thismod.community_listings?.[0]?.categories || [];
         const categorynameslist = (Array.isArray(categoriesrawww) ? categoriesrawww : []).map(catt => {
             if (typeof catt === 'string') return catt;
@@ -190,6 +189,10 @@ function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
             theimagething.loading = 'lazy';
             theimagething.decoding = 'async';
         }
+        const thedescthing = themodtouse.querySelector('.moddescrip');
+        const whomademod = themodtouse.querySelector('.modauth');
+        if (thedescthing) thedescthing.textContent = mod.thedesc || 'no description!';
+        if (whomademod) whomademod.textContent = "By: " + mod.whomade || 'By: unknown';
         themodtouse.addEventListener("click", () => {
             window.location.href = mod.whatlinkshouldbe;
         });
