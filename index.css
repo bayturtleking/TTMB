@@ -86,13 +86,26 @@ body.hasdasidebarbar .icon2 {
     height:600px !important;
 }
 
+.modgridd.msiz-card-s .mod {
+    height:400px !important;
+}
+
 .modgridd.msiz-card .mod img {
     width:320px;
     height:320px;
 }
 
+.modgridd.msiz-card-s .mod img {
+    width:190px;
+    height:190px;
+}
+
 .modgridd.msiz-card .mod .moddescrip {
     font-size: 1.5em;
+}
+
+.modgridd.msiz-card-s .mod .moddescrip {
+    font-size: 1.2em;
 }
 
 .modauth {
