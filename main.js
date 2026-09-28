@@ -29,10 +29,10 @@ if (handpicked && handpicked === "y") {
 }
 
 if (exclusivesonly && exclusivesonly === "y") {
-        document.querySelectorAll('.dasidebarfilter').forEach(sidebabutto => {
-            if (sidebabutto.id !== "ttmbexclusfilterbutto") {
-                sidebabutto.style.display = "none";
-            }
+    document.querySelectorAll('.dasidebarfilter').forEach(sidebabutto => {
+        if (sidebabutto.id !== "ttmbexclusfilterbutto") {
+            sidebabutto.style.display = "none";
+        }
     });
 
 }
@@ -280,7 +280,7 @@ function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
         themodtouse.style.display = '';
         themodtouse.classList.toggle('exclusivemod', !!mod.isexclusive);
         const titletext = themodtouse.querySelector('h1');
-        if (titletext) titletext.textContent = mod.othername || mod.nameofmod || 'idk what its called';
+        if (titletext) titletext.textContent = mod.othername.replaceAll("_", " ") || mod.nameofmod.replaceAll("_", " ") || 'idk what its called';
         const theimagething = themodtouse.querySelector('img');
         if (theimagething) {
             theimagething.src = mod.theicon || '';
@@ -379,17 +379,11 @@ function showthemods(mods) {
 }
 function redowithnewfilters() {
     const searchbarr = document.getElementById('searchformod');
-    const qqqq = searchbarr ? (searchbarr.value || '').trim().toLowerCase() : '';
-    if (!qqqq) {
-        showthemods(cacheformods);
-        return;
-    }
-    const filterrrreddd = cacheformods.filter(m => {
-        const nameee = (m.othername || m.nameofmod || '').toLowerCase();
-        const ownerrr = (m.whomade || '').toLowerCase();
-        const desccc = (m.thedesc || '').toLowerCase();
-        return nameee.includes(qqqq) || ownerrr.includes(qqqq) || desccc.includes(qqqq);
-    });
+    const qqqq = (searchbarr?.value || '').trim().toLowerCase();
+    if (!qqqq) { showthemods(cacheformods); return; }
+    const qqwithspac = qqqq.replaceAll("_", " ");
+    const doitmatch = (datex) => datex.includes(qqqq) || datex.replaceAll("_", " ").includes(qqwithspac);
+    const filterrrreddd = cacheformods.filter(m => doitmatch((m.othername || m.nameofmod || '').toLowerCase()) || doitmatch((m.whomade || '').toLowerCase()) || doitmatch((m.thedesc || '').toLowerCase()));
     showthemods(filterrrreddd);
 }
 function updatefilter() {
