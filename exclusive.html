@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TABS mod browser</title>
+    <link rel="icon" href="/favicon.ico">
+    <meta property="og:title" content="Turtle's TABS Mod Browser" />
+    <meta property="og:description"
+        content="Instantly see all TABS mods, apply filters, and hide low quality unit mods " />
+    <meta property="og:url" content="https://tabs.turtlewave.dev" />
+    <meta name="theme-color" content="#0FECFC">
+    <link href="/index.css" rel="stylesheet">
+    <link href="/exclusi.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="icon2">
+        <img src="/assets/Icon128.png">
+        <h1 class="icon">T T M B</h1>
+        <h1 class="showinaprov textgradd" style="margin-left: 10px; --colorfortegrad: linear-gradient(to right, #9437ff, #22deff);">Exclusives</h1>
+    </div>
+    <main class="content">
+        <div class="mainmodinfo">
+            <img src="" id="modicon">
+            <h1 id="nameformod">Mod Name</h1>
+        </div>
+        <h2 id="shortdescr"></h2>
+        <h2 id="whomadmod" style="display:none;"></h2>
+        <button id="downloadbutto">Download</button>
+        <div class="nextto">
+            <a href="/guides/zip.html">How to use downloaded ZIP</a>
+            <a href="" id="linktoreadmea" style="display:none; margin-left: 10px;">Full Description</a>
+        </div>
+        <div id="moddescri" class="moddescri">description could not be loaded</div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+    <script defer src="/global.js"></script>
+    <script defer>
+        function makemdreadm(holdthing, thetextt) {
+            if (!holdthing) return;
+            if (window.marked && window.DOMPurify) {
+                const rawhtml = marked.parse(thetextt);
+                holdthing.innerHTML = DOMPurify.sanitize(rawhtml);
+            } else {
+                holdthing.textContent = thetextt;
+            }
+        }
+        (function () {
+            const daparams = new URLSearchParams(window.location.search);
+            const name = daparams.get('t') || 'Unknown mod';
+            const author = daparams.get('a') || '';
+            const desccc = daparams.get('de');
+            const version = daparams.get('v') || '';
+            const icon = daparams.get('i') || '';
+            const linkfordownl = daparams.get('d') || '';
+            const linktoreadme = daparams.get('r') || '';
+            document.title = name + ' ||| TTMB';
+            const wherenamego = document.getElementById('nameformod');
+            const shortdescsummar = document.getElementById("shortdescr");
+            if (shortdescsummar && desccc) {
+                shortdescsummar.textContent = desccc;
+            }
+            if (wherenamego) wherenamego.textContent = name + (version ? ` (v${version})` : '');
+            const whereicongo = document.getElementById('modicon');
+            if (whereicongo) {
+                whereicongo.src = icon;
+                whereicongo.alt = name;
+            }
+            
+            const descccripthing = document.getElementById('moddescri');
+            const authortex = document.getElementById('whomadmod');
+            if (authortex && author) {
+                authortex.textContent = 'By: ' + author;
+                authortex.style.display = 'block';
+            }
+            const downloadbutto = document.getElementById('downloadbutto');
+            if (downloadbutto) {
+                if (linkfordownl) {
+                    downloadbutto.addEventListener('click', () => {
+                        window.location.href = linkfordownl;
+                    });
+                } else {
+                    downloadbutto.disabled = true;
+                    downloadbutto.textContent = 'Download unavailable';
+                }
+            }
+            const readmea = document.getElementById('linktoreadmea');
+            if (linktoreadme) {
+                if (descccripthing) descccripthing.textContent = 'Loading readme...';
+                if (readmea) {
+                    readmea.href = linktoreadme;
+                    readmea.style.display = 'block';
+                }
+                fetch(linktoreadme)
+                    .then(daresp => {
+                        if (!daresp.ok) throw new Error('get readme fail :( ' + daresp.statusText);
+                        return daresp.text();
+                    })
+                    .then(readmetext => {
+                        makemdreadm(descccripthing, readmetext);
+                    })
+                    .catch(e => {
+                        console.warn('no load readme :(', e);
+                        makemdreadm(descccripthing, desccc);
+                    });
+            } else {
+                makemdreadm(descccripthing, desccc);
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+#nameformod {
+    font-size: 3rem;
+    margin-left: 50px;
+}
+
+#modicon {
+    width:260px;
+    height:260px;
+    border-radius: 15px;
+}
+
+.mainmodinfo {
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.moddescri {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    width:80%;
+    margin-top: 30px;
+    font-size: 1.8rem;
+    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    resize: none;
+    align-self: center;
+}
+
+#downloadbutto {
+    margin-top: 50px;
+    color:black;
+    background-color: lime;
+    width:200px;
+    height:50px;
+}

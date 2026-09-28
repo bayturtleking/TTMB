@@ -11,7 +11,7 @@ function showdarkm() {
 }
 
 function toggledarkmode() {
-    const isnowdark = document.body.classList.toggle('darkmode');
+    const isnowdark = document.body.classList.toggle('godark');
     if (localStorage.getItem("isdarkm") === "n" || localStorage.getItem("isdarkm") === null) {
         localStorage.setItem("isdarkm", "y");
     } else {
@@ -22,8 +22,18 @@ function toggledarkmode() {
 
 function settingshow() {
     let showmoddescrip;
-    if (localStorage.getItem("showmoddescrip") === "n") showmoddescrip = false;
-    else showmoddescrip = true;
+    if (localStorage.getItem("showmoddescrip") === "n") showmoddescrip = false; else showmoddescrip = true;
+    let ttmbbuttonbig;
+    if (localStorage.getItem("ttmbbuttonbig") === "n") ttmbbuttonbig = false; else ttmbbuttonbig = true;
+    const ttmbexclusfilterbutto = document.getElementById("ttmbexclusfilterbutto");
+    if (ttmbexclusfilterbutto) {
+        if (!ttmbbuttonbig) {
+            ttmbexclusfilterbutto.classList.remove("exclusivefilte");
+            ttmbexclusfilterbutto.classList.add("dasidebarfilter");
+        }
+    }
+    const ttmbbuttonbigchec = document.getElementById("ttmbbuttonbig");
+    if (ttmbbuttonbigchec) ttmbbuttonbigchec.checked = ttmbbuttonbig;
     const moddesccheckb = document.getElementById("showmoddescrip");
     if (moddesccheckb) moddesccheckb.checked = showmoddescrip;
     let showmodauth;
@@ -42,10 +52,18 @@ function settingshow() {
     if (modsizeboxaae) modsizeboxaae.value = modsize || "msiz-card";
 }
 
+
 function settingscri_moddesc() {
     const moddesccheckb = document.getElementById("showmoddescrip");
     if (moddesccheckb.checked) localStorage.setItem("showmoddescrip", "y");
     else localStorage.setItem("showmoddescrip", "n");
+    settingshow();
+}
+
+function settingscri_ttmbbuttonbig() {
+    const moddesccheckb = document.getElementById("ttmbbuttonbig");
+    if (moddesccheckb.checked) localStorage.setItem("ttmbbuttonbig", "y");
+    else localStorage.setItem("ttmbbuttonbig", "n");
     settingshow();
 }
 
@@ -65,5 +83,7 @@ showdarkm();
 settingshow();
 const moddesccheckb = document.getElementById("showmoddescrip");
 const modmakbox = document.getElementById("showmodauth");
+const ttmbbuttonbigchec = document.getElementById("ttmbbuttonbig");
 if (moddesccheckb) moddesccheckb.addEventListener("change", settingscri_moddesc);
 if (modmakbox) modmakbox.addEventListener("change", settingscri_modmaker);
+if (ttmbbuttonbigchec) ttmbbuttonbigchec.addEventListener("change", settingscri_ttmbbuttonbig);

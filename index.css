@@ -250,6 +250,30 @@ a {
     margin-bottom: 0;
 }
 
+.exclusivefilte {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 2px solid purple !important;
+    border-radius: 8px;
+    background: linear-gradient(45deg, purple, cyan);
+    color: #08214a;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 0.95em;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 150ms;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    height: 70px;
+    margin-bottom: 0;
+    font-size: 1.3em;
+}
+
 .dasidebarfilter:hover {
     transform: scale(1.03);
     border-color: #075df2;
@@ -302,6 +326,16 @@ a {
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+.nextto {
+    display: flex;
+    flex-direction: row;
+    width:max-content;
+    align-content: center;
+    padding:20px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 #searchformod {

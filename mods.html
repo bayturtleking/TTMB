@@ -33,6 +33,9 @@
         <button class="dasidebarfilter buttontoreverse" data-param="re" type="button">
             Show only hidden mods
         </button>
+        <button type="button" onclick="if(location.href.includes('&excl=y')){location.href='/mods?t=y';} else {location.href='/mods?t=y&excl=y';}" id="ttmbexclusfilterbutto" class="exclusivefilte">
+            TTMB Exclusives
+        </button>
         <a style="position:fixed; bottom:1%;" href="settings.html">Settings</a>
     </div>
     <div class="icon2">

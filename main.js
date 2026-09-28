@@ -14,6 +14,7 @@ let modsshown = 0;
 const howmanycookies = 24;
 let sentobserv = null;
 const handpicked = new URLSearchParams(window.location.search).get('hand');
+const exclusivesonly = new URLSearchParams(window.location.search).get('excl');
 
 if (handpicked && handpicked === "y") {
     document.body.classList.remove("hasdasidebarbar");
@@ -25,6 +26,15 @@ if (handpicked && handpicked === "y") {
     document.querySelectorAll('.showinaprov').forEach(function (theob) {
         theob.style.display = 'block';
     });
+}
+
+if (exclusivesonly && exclusivesonly === "y") {
+        document.querySelectorAll('.dasidebarfilter').forEach(sidebabutto => {
+            if (sidebabutto.id !== "ttmbexclusfilterbutto") {
+                sidebabutto.style.display = "none";
+            }
+    });
+
 }
 
 async function getdalists(maiurl, jsdeurl) {
@@ -54,6 +64,45 @@ async function getunitacceptablelist() {
     );
 }
 
+async function getexclusivesarr() {
+    try {
+        const respon = await fetch('https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/exclusives.json');
+        if (!respon.ok) throw new Error('github exclusives fail ' + respon.statusText);
+        const thelist = await respon.json();
+        return Array.isArray(thelist) ? thelist : [];
+    } catch (e) {
+        console.warn('failed github exclusives, trying jsdelivr', e);
+    }
+    try {
+        const backuprespon = await fetch('https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/exclusives.json');
+        if (!backuprespon.ok) throw new Error('fail jsdel exclusives ' + backuprespon.statusText);
+        const backuplist = await backuprespon.json();
+        return Array.isArray(backuplist) ? backuplist : [];
+    } catch (e) {
+        console.warn('fail jsdel exclusives', e);
+        return [];
+    }
+}
+
+function howexclusivelook(ex) {
+    return {
+        nameofmod: ex.t || 'idk',
+        whomade: ex.a || 'BayTurtleKing',
+        othername: ex.t || 'idk',
+        thedesc: ex.de || '',
+        version: ex.v || "",
+        theicon: ex.i || '',
+        whatlinkshouldbe: ex.d || "",
+        readmelink: ex.r || '',
+        whenmade: Date.parse(ex.dt) || 0, 
+        isdepre: false,
+        isnsfw: false,
+        hasbepinex: true,
+        ismodpack: false,
+        isexclusive: true
+    };
+}
+
 async function getunitblacklist() {
     return getdalists(
         'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/lowqualityunits-blacklist.json',
@@ -75,7 +124,7 @@ async function getapprovedlis() {
     );
 }
 
-const modcachescheme = 2;  // change whenever mod obj shape changes so it has to get new cache
+const modcachescheme = 3;  // change whenever mod obj shape changes so it has to get new cache
 async function getmods() {
     const cachedcurrent = localStorage.getItem('modcachee');
     if (cachedcurrent) {
@@ -121,8 +170,9 @@ async function getmods() {
         const hasmodpackcategory = categorynameslist.some(catname => /modpack/i.test(catname));
         const namesaysmodpack = /modpack/i.test(nameofmod) || /modpack/i.test(othername);
         const ismodpack = hasmodpackcategory || namesaysmodpack;
-
-        return { nameofmod, whomade, othername, thedesc, version, theicon, whatlinkshouldbe, isdepre, isnsfw, hasbepinex, ismodpack };
+        const rawdate = thismod.date_uptheyhavedate || thismod.date_created || curversion?.date_created || '';
+        const whenmade = Date.parse(rawdate) || 0;
+        return { nameofmod, whomade, othername, thedesc, version, theicon, whatlinkshouldbe, isdepre, isnsfw, hasbepinex, ismodpack, whenmade, isexclusive: false };
     });
     try {
         localStorage.setItem('modcachee', JSON.stringify({ timestamp: Date.now(), modcachescheme, mods }));
@@ -132,7 +182,31 @@ async function getmods() {
     return mods;
 }
 let cacheformods = [];
+
+function whereexclusivesgo(exclusivemods, thundermods) {
+    const withoutdatessa = exclusivemods.filter(x => !x.whenmade);
+    const theyhavedate = exclusivemods.filter(x => x.whenmade).sort((a, b) => b.whenmade - a.whenmade);
+    const mergeup = [...withoutdatessa];
+    let danexteeae = 0;
+    thundermods.forEach(mod => {
+        if (mod.whenmade) {
+            while (danexteeae < theyhavedate.length && theyhavedate[danexteeae].whenmade >= mod.whenmade) {
+                mergeup.push(theyhavedate[danexteeae]);
+                danexteeae += 1;
+            }
+        }
+        mergeup.push(mod);
+    });
+    while (danexteeae < theyhavedate.length) {
+        mergeup.push(theyhavedate[danexteeae]);
+        danexteeae += 1;
+    }
+    return mergeup;
+}
 function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack) {
+    if (mod.isexclusive) {
+        return null;
+    }
     if (handpicked && handpicked === "y") {
         if (!setofapprovedmods.has(mod.nameofmod) || mod.isdepre) {
             return "notapproved-ordepre";
@@ -173,6 +247,19 @@ function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack) 
     }
     return null;
 }
+function makexcluslink(mod) {
+    const ppppp = new URLSearchParams({
+        t: mod.othername || mod.nameofmod || '',
+        a: mod.whomade || '',
+        de: mod.thedesc || '',
+        v: mod.version || '',
+        i: mod.theicon || '',
+        d: mod.whatlinkshouldbe || '',
+        r: mod.readmelink || ''
+    });
+    return '/exclusive.html?' + ppppp.toString();
+}
+
 function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
     const thenextpartt = filteredmodscurrent.slice(modsshown, modsshown + howmanycookies);
     if (!thenextpartt.length) return;
@@ -181,6 +268,7 @@ function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
         const themodtouse = theplaceholdermodthing.cloneNode(true);
         themodtouse.id = '';
         themodtouse.style.display = '';
+        themodtouse.classList.toggle('exclusivemod', !!mod.isexclusive);
         const titletext = themodtouse.querySelector('h1');
         if (titletext) titletext.textContent = mod.othername || mod.nameofmod || 'idk what its called';
         const theimagething = themodtouse.querySelector('img');
@@ -194,7 +282,11 @@ function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
         if (thedescthing) thedescthing.textContent = mod.thedesc || 'no description!';
         if (whomademod) whomademod.textContent = "By: " + mod.whomade || 'By: unknown';
         themodtouse.addEventListener("click", () => {
-            window.location.href = mod.whatlinkshouldbe;
+            if (mod.isexclusive) {
+                window.location.href = makexcluslink(mod);
+            } else {
+                window.location.href = mod.whatlinkshouldbe;
+            }
         });
         fraggrenade.appendChild(themodtouse);
     });
@@ -233,6 +325,9 @@ function showthemods(mods) {
     const dorev = currentparams.get('re');
     filteredmodscurrent = [];
     mods.forEach(mod => {
+        if (exclusivesonly === "y" && !mod.isexclusive) {
+            return;
+        }
         const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack);
         if (hidereason === "unit") unitmodscaught += 1;
         else if (hidereason === "depre") deprecmodscaught += 1;
@@ -309,9 +404,9 @@ function togglefilterrr(paramname) {
     redowithnewfilters();
 }
 function dofilters() {
-    document.querySelectorAll('.dasidebarfilter').forEach(btn => {
-        btn.addEventListener('click', () => {
-            togglefilterrr(btn.dataset.param);
+    document.querySelectorAll('.dasidebarfilter').forEach(dabutto => {
+        dabutto.addEventListener('click', () => {
+            togglefilterrr(dabutto.dataset.param);
         });
     });
     updatefilter();
@@ -319,18 +414,20 @@ function dofilters() {
 (async function blablabla() {
     try {
         dofilters();
-        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo] = await Promise.all([
+        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws] = await Promise.all([
             getmods(),
             getunitacceptablelist(),
             getunitblacklist(),
             getbadrepblacklist(),
-            getapprovedlis()
+            getapprovedlis(),
+            getexclusivesarr()
         ]);
         whitelistofunitslop = dawhitelist;
         blacklistofunitslop = unitblacklist;
         blacklistofbadrep = badrepblacklist;
         setofapprovedmods = approvedlistofmo;
-        cacheformods = mods;
+        const exclusivemods = exclusiraws.map(howexclusivelook);
+        cacheformods = whereexclusivesgo(exclusivemods, mods);
         showthemods(cacheformods);
         const searchbarr = document.getElementById('searchformod');
         if (searchbarr) {
