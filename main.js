@@ -67,11 +67,11 @@ async function getunitacceptablelist() {
 async function getexclusivesarr() {
     try {
         const respon = await fetch('https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/exclusives.json');
-        if (!respon.ok) throw new Error('github exclusives fail ' + respon.statusText);
+        if (!respon.ok) throw new Error('github exclusives faill ' + respon.statusText);
         const thelist = await respon.json();
         return Array.isArray(thelist) ? thelist : [];
     } catch (e) {
-        console.warn('failed github exclusives, trying jsdelivr', e);
+        console.warn('failed github exclusives tryin jsdelivr', e);
     }
     try {
         const backuprespon = await fetch('https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/exclusives.json');
@@ -94,7 +94,7 @@ function howexclusivelook(ex) {
         theicon: ex.i || '',
         whatlinkshouldbe: ex.d || "",
         readmelink: ex.r || '',
-        whenmade: Date.parse(ex.dt) || 0, 
+        whenmade: Date.parse(ex.dt) || 0,
         isdepre: false,
         isnsfw: false,
         hasbepinex: true,
@@ -124,7 +124,7 @@ async function getapprovedlis() {
     );
 }
 
-const modcachescheme = 3;  // change whenever mod obj shape changes so it has to get new cache
+const modcachescheme = 4;  // change whenever mod obj shape changes so it has to get new cache
 async function getmods() {
     const cachedcurrent = localStorage.getItem('modcachee');
     if (cachedcurrent) {
@@ -170,7 +170,7 @@ async function getmods() {
         const hasmodpackcategory = categorynameslist.some(catname => /modpack/i.test(catname));
         const namesaysmodpack = /modpack/i.test(nameofmod) || /modpack/i.test(othername);
         const ismodpack = hasmodpackcategory || namesaysmodpack;
-        const rawdate = thismod.date_uptheyhavedate || thismod.date_created || curversion?.date_created || '';
+        const rawdate = thismod.date_updated || thismod.date_created || curversion?.date_created || '';
         const whenmade = Date.parse(rawdate) || 0;
         return { nameofmod, whomade, othername, thedesc, version, theicon, whatlinkshouldbe, isdepre, isnsfw, hasbepinex, ismodpack, whenmade, isexclusive: false };
     });
@@ -182,24 +182,34 @@ async function getmods() {
     return mods;
 }
 let cacheformods = [];
-
 function whereexclusivesgo(exclusivemods, thundermods) {
     const withoutdatessa = exclusivemods.filter(x => !x.whenmade);
-    const theyhavedate = exclusivemods.filter(x => x.whenmade).sort((a, b) => b.whenmade - a.whenmade);
+    const theyhavedate = exclusivemods.filter(x => x.whenmade);
+    const placed = theyhavedate.map(ex => {
+        let score = 0;
+        thundermods.forEach(m => {
+            if (m.whenmade && m.whenmade <= ex.whenmade) score += 1;
+        });
+        let bestscore = score;
+        let bestspot = 0;
+        thundermods.forEach((m, i) => {
+            if (!m.whenmade) return;
+            score += m.whenmade > ex.whenmade ? 1 : -1;
+            if (score > bestscore) {
+                bestscore = score;
+                bestspot = i + 1;
+            }
+        });
+        return { ex, spot: bestspot };
+    }).sort((a, b) => a.spot - b.spot || b.ex.whenmade - a.ex.whenmade);
     const mergeup = [...withoutdatessa];
     let danexteeae = 0;
-    thundermods.forEach(mod => {
-        if (mod.whenmade) {
-            while (danexteeae < theyhavedate.length && theyhavedate[danexteeae].whenmade >= mod.whenmade) {
-                mergeup.push(theyhavedate[danexteeae]);
-                danexteeae += 1;
-            }
+    for (let i = 0; i <= thundermods.length; i++) {
+        while (danexteeae < placed.length && placed[danexteeae].spot === i) {
+            mergeup.push(placed[danexteeae].ex);
+            danexteeae += 1;
         }
-        mergeup.push(mod);
-    });
-    while (danexteeae < theyhavedate.length) {
-        mergeup.push(theyhavedate[danexteeae]);
-        danexteeae += 1;
+        if (i < thundermods.length) mergeup.push(thundermods[i]);
     }
     return mergeup;
 }
@@ -428,6 +438,10 @@ function dofilters() {
         setofapprovedmods = approvedlistofmo;
         const exclusivemods = exclusiraws.map(howexclusivelook);
         cacheformods = whereexclusivesgo(exclusivemods, mods);
+        const showdadat = m => (m.whenmade ? new Date(m.whenmade).toISOString() : 'no date :(');
+        console.log('exclusive dates:', exclusivemods.map(m => [m.nameofmod, showdadat(m)]));
+        console.log('first 10 thunderstore mods:', mods.slice(0, 10).map(m => [m.othername, showdadat(m)]));
+        console.log('exclusive ended up at index:', cacheformods.findIndex(m => m.isexclusive));
         showthemods(cacheformods);
         const searchbarr = document.getElementById('searchformod');
         if (searchbarr) {
