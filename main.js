@@ -9,6 +9,8 @@ let whitelistofunitslop = new Set();
 let blacklistofunitslop = new Set();
 let blacklistofbadrep = new Set();
 let setofapprovedmods = new Set();
+let knownaigenmoddos = new Set();
+let knowncreatrswhousai = new Set();
 let filteredmodscurrent = [];
 let modsshown = 0;
 const howmanycookies = 24;
@@ -124,6 +126,37 @@ async function getapprovedlis() {
     );
 }
 
+async function getaigenlist() {
+    async function fetchaigenlist(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('failed get the vibecoded mods we know :( :' + response.statusText);
+        const dalist = await response.json();
+        if (!dalist || !Array.isArray(dalist.modsknown) || !Array.isArray(dalist.creatorknown) || !dalist.modsknown.every(name => typeof name === 'string') || !dalist.creatorknown.every(name => typeof name === 'string')) {
+            throw new Error('oops. format wrong');
+        }
+        return {
+            mods: new Set(dalist.modsknown.map(name => name.toLowerCase())),
+            creators: new Set(dalist.creatorknown.map(name => name.toLowerCase()))
+        };
+    }
+
+    try {
+        return await fetchaigenlist(
+            'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/known-to-be-ai-gen.json'
+        );
+    } catch (e) {
+        console.warn('fail get the list of aigen mods :( tryin jsdelivr', e);
+    }
+    try {
+        return await fetchaigenlist(
+            'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/known-to-be-ai-gen.json'
+        );
+    } catch (e) {
+        console.warn('could not get aigen mod filtr :(', e);
+        return { mods: new Set(), creators: new Set() };
+    }
+}
+
 const modcachescheme = 4;  // change whenever mod obj shape changes so it has to get new cache
 async function getmods() {
     const cachedcurrent = localStorage.getItem('modcachee');
@@ -163,11 +196,11 @@ async function getmods() {
         const depslist = (curversion && Array.isArray(curversion.dependencies)) ? curversion.dependencies : (Array.isArray(thismod.dependencies) ? thismod.dependencies : []);
         const hasbepinex = depslist.some(depp => /bepinex/i.test(depp));
         const categoriesrawww = thismod.categories || thismod.community_listings?.[0]?.categories || [];
-        const categorynameslist = (Array.isArray(categoriesrawww) ? categoriesrawww : []).map(catt => {
+        const catnamelis = (Array.isArray(categoriesrawww) ? categoriesrawww : []).map(catt => {
             if (typeof catt === 'string') return catt;
             return (catt && (catt.name || catt.slug || catt.label)) || '';
         });
-        const hasmodpackcategory = categorynameslist.some(catname => /modpack/i.test(catname));
+        const hasmodpackcategory = catnamelis.some(catname => /modpack/i.test(catname));
         const namesaysmodpack = /modpack/i.test(nameofmod) || /modpack/i.test(othername);
         const ismodpack = hasmodpackcategory || namesaysmodpack;
         const rawdate = thismod.date_updated || thismod.date_created || curversion?.date_created || '';
@@ -213,7 +246,7 @@ function whereexclusivesgo(exclusivemods, thundermods) {
     }
     return mergeup;
 }
-function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack) {
+function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn) {
     if (mod.isexclusive) {
         return null;
     }
@@ -222,6 +255,13 @@ function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack) 
             return "notapproved-ordepre";
         }
         return null;
+    }
+    const hidaigener = hideaigenn === "y"
+        || (hideaigenn !== "n" && localStorage.getItem("hideaimoddef") === "y");
+    if (hidaigener && (
+        knownaigenmoddos.has(mod.nameofmod.toLowerCase()) || knowncreatrswhousai.has(mod.whomade.toLowerCase())
+    )) {
+        return "ai";
     }
     if (blacklistofbadrep.has(mod.nameofmod)) {
         return "badrep";
@@ -332,13 +372,14 @@ function showthemods(mods) {
     const shownonf = currentparams.get('nf');
     const shownsfw = currentparams.get('n');
     const domodpack = currentparams.get('mp');
+    const hideaigenn = currentparams.get('ai');
     const dorev = currentparams.get('re');
     filteredmodscurrent = [];
     mods.forEach(mod => {
         if (exclusivesonly === "y" && !mod.isexclusive) {
             return;
         }
-        const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack);
+        const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn);
         if (hidereason === "unit") unitmodscaught += 1;
         else if (hidereason === "depre") deprecmodscaught += 1;
         else if (hidereason === "nsfw") nsfwmodscaught += 1;
@@ -364,7 +405,7 @@ function showthemods(mods) {
     }
     const eldiv = document.createElement('div');
     eldiv.id = 'thesentofmods';
-    eldiv.style.gridColumn = '1 / -1';  
+    eldiv.style.gridColumn = '1 / -1';
     eldiv.style.height = '1px';
     gridsofmodss.appendChild(eldiv);
     sentobserv = new IntersectionObserver((entries) => {
@@ -390,7 +431,7 @@ function updatefilter() {
     const theparamss = new URLSearchParams(window.location.search);
     document.querySelectorAll('.dasidebarfilter').forEach(buttonnn => {
         const nameofp = buttonnn.dataset.param;
-        const isitact = theparamss.get(nameofp) === "y";
+        const isitact = nameofp === "ai" ? (localStorage.getItem("hideaimoddef") === "y" ? theparamss.get(nameofp) === "n" : theparamss.get(nameofp) === "y") : theparamss.get(nameofp) === "y";
         buttonnn.classList.toggle('active', isitact);
         buttonnn.setAttribute('aria-pressed', isitact ? 'true' : 'false');
     });
@@ -398,7 +439,14 @@ function updatefilter() {
 function togglefilterrr(paramname) {
     const theurl = new URL(window.location.href);
     const currentval = theurl.searchParams.get(paramname);
-    if (currentval === "y") {
+    const hidaigenerByDefault = localStorage.getItem("hideaimoddef") === "y";
+    if (paramname === "ai" && hidaigenerByDefault) {
+        if (currentval === "n") {
+            theurl.searchParams.delete(paramname);
+        } else {
+            theurl.searchParams.set(paramname, "n");
+        }
+    } else if (currentval === "y") {
         theurl.searchParams.delete(paramname);
     } else {
         theurl.searchParams.set(paramname, "y");
@@ -418,24 +466,24 @@ function dofilters() {
 (async function blablabla() {
     try {
         dofilters();
-        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws] = await Promise.all([
+        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws, aigenlist] = await Promise.all([
             getmods(),
             getunitacceptablelist(),
             getunitblacklist(),
             getbadrepblacklist(),
             getapprovedlis(),
-            getexclusivesarr()
+            getexclusivesarr(),
+            getaigenlist()
         ]);
         whitelistofunitslop = dawhitelist;
         blacklistofunitslop = unitblacklist;
         blacklistofbadrep = badrepblacklist;
         setofapprovedmods = approvedlistofmo;
+        knownaigenmoddos = aigenlist.mods;
+        knowncreatrswhousai = aigenlist.creators;
         const exclusivemods = exclusiraws.map(howexclusivelook);
         cacheformods = whereexclusivesgo(exclusivemods, mods);
         const showdadat = m => (m.whenmade ? new Date(m.whenmade).toISOString() : 'no date :(');
-        console.log('exclusive dates:', exclusivemods.map(m => [m.nameofmod, showdadat(m)]));
-        console.log('first 10 thunderstore mods:', mods.slice(0, 10).map(m => [m.othername, showdadat(m)]));
-        console.log('exclusive ended up at index:', cacheformods.findIndex(m => m.isexclusive));
         showthemods(cacheformods);
         const searchbarr = document.getElementById('searchformod');
         if (searchbarr) {

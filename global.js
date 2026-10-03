@@ -36,9 +36,7 @@ function settingshow() {
     if (ttmbbuttonbigchec) ttmbbuttonbigchec.checked = ttmbbuttonbig;
     const moddesccheckb = document.getElementById("showmoddescrip");
     if (moddesccheckb) moddesccheckb.checked = showmoddescrip;
-    let showmodauth;
-    if (localStorage.getItem("showmodauth") === "n") showmodauth = false;
-    else showmodauth = true;
+    const showmodauth = localStorage.getItem("showmodauth") !== "n";
     const modmakbox = document.getElementById("showmodauth");
     if (modmakbox) modmakbox.checked = showmodauth;
     const modsize = localStorage.getItem("modsize");
@@ -50,6 +48,22 @@ function settingshow() {
     }
     const modsizeboxaae = document.getElementById("modsize");
     if (modsizeboxaae) modsizeboxaae.value = modsize || "msiz-card";
+    const hideaimoddef = localStorage.getItem("hideaimoddef") === "y";
+    const hideaimoddefchec = document.getElementById("hideaimoddef");
+    if (hideaimoddefchec) hideaimoddefchec.checked = hideaimoddef;
+    const aifilt = document.getElementById("filtrforaimod");
+    const hidefilttex = document.getElementById("filterhidesec");
+    const includfilttex = document.getElementById("filterincludesec");
+    if (aifilt && hidefilttex && includfilttex) {
+        aifilt.textContent = hideaimoddef ? "Include likely AI-generated mods" : "Hide likely AI-generated mods";
+        if (hideaimoddef) {
+            includfilttex.insertAdjacentElement("afterend", aifilt);
+            hidefilttex.style.display = "none";
+        } else {
+            hidefilttex.insertAdjacentElement("afterend", aifilt);
+            hidefilttex.style.display = "";
+        }
+    }
 }
 
 
@@ -79,11 +93,19 @@ function settingscri_modsize() {
     localStorage.setItem("modsize", modsizeboxaae.value);
     settingshow();
 }
+
+function settingscri_aimoddef() {
+    const hideaimoddefchec = document.getElementById("hideaimoddef");
+    localStorage.setItem("hideaimoddef", hideaimoddefchec.checked ? "y" : "n");
+    settingshow();
+}
 showdarkm();
 settingshow();
 const moddesccheckb = document.getElementById("showmoddescrip");
 const modmakbox = document.getElementById("showmodauth");
 const ttmbbuttonbigchec = document.getElementById("ttmbbuttonbig");
+const hideaimoddefchec = document.getElementById("hideaimoddef");
 if (moddesccheckb) moddesccheckb.addEventListener("change", settingscri_moddesc);
 if (modmakbox) modmakbox.addEventListener("change", settingscri_modmaker);
 if (ttmbbuttonbigchec) ttmbbuttonbigchec.addEventListener("change", settingscri_ttmbbuttonbig);
+if (hideaimoddefchec) hideaimoddefchec.addEventListener("change", settingscri_aimoddef);
