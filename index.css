@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
 
+html {
+    zoom: 0.75;
+}
+
 body {
     margin: 0;
     font-family: 'Roboto Condensed', sans-serif;
@@ -209,7 +213,7 @@ a {
     position: fixed;
     left: 0;
     top: 0;
-    height: 100vh;
+    bottom: 0;
     width: 220px;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 20px 15px;

@@ -364,7 +364,7 @@ function showthemods(mods) {
     }
     const eldiv = document.createElement('div');
     eldiv.id = 'thesentofmods';
-    eldiv.style.gridColumn = '1 / -1';
+    eldiv.style.gridColumn = '1 / -1';  
     eldiv.style.height = '1px';
     gridsofmodss.appendChild(eldiv);
     sentobserv = new IntersectionObserver((entries) => {
