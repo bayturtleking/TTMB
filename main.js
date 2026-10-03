@@ -36,7 +36,9 @@ if (exclusivesonly && exclusivesonly === "y") {
             sidebabutto.style.display = "none";
         }
     });
-
+    document.querySelectorAll('.filtersepar').forEach(sidebabutto => {
+         sidebabutto.style.display = "none";
+    });
 }
 
 async function getdalists(maiurl, jsdeurl) {

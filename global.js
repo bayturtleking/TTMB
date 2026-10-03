@@ -54,15 +54,15 @@ function settingshow() {
     const aifilt = document.getElementById("filtrforaimod");
     const hidefilttex = document.getElementById("filterhidesec");
     const includfilttex = document.getElementById("filterincludesec");
+    const exclusivesonly = new URLSearchParams(window.location.search).get("excl") === "y";
     if (aifilt && hidefilttex && includfilttex) {
         aifilt.textContent = hideaimoddef ? "Include likely AI-generated mods" : "Hide likely AI-generated mods";
         if (hideaimoddef) {
             includfilttex.insertAdjacentElement("afterend", aifilt);
-            hidefilttex.style.display = "none";
         } else {
             hidefilttex.insertAdjacentElement("afterend", aifilt);
-            hidefilttex.style.display = "";
         }
+        hidefilttex.style.display = hideaimoddef || exclusivesonly ? "none" : "";
     }
 }
 
