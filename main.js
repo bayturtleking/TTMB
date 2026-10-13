@@ -5,10 +5,13 @@ let unitmodscaught = 0;
 let nsfwmodscaught = 0;
 let badrepmodscaught = 0;
 let modpackmodscaught = 0;
+let translmoscaugh = 0;
+let aimodscaught = 0;
 let whitelistofunitslop = new Set();
 let blacklistofunitslop = new Set();
 let blacklistofbadrep = new Set();
 let setofapprovedmods = new Set();
+let setoflocalmods = new Set();
 let knownaigenmoddos = new Set();
 let knowncreatrswhousai = new Set();
 let filteredmodscurrent = [];
@@ -125,6 +128,13 @@ async function getapprovedlis() {
     return getdalists(
         'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/ttmb-approved.json',
         'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/ttmb-approved.json'
+    );
+}
+
+async function translatmodsslis() {
+    return getdalists(
+        'https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/localization-mods.json',
+        'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/localization-mods.json'
     );
 }
 
@@ -248,7 +258,7 @@ function whereexclusivesgo(exclusivemods, thundermods) {
     }
     return mergeup;
 }
-function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn) {
+function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn, showtranslat) {
     if (mod.isexclusive) {
         return null;
     }
@@ -267,6 +277,9 @@ function modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, 
     }
     if (blacklistofbadrep.has(mod.nameofmod)) {
         return "badrep";
+    }
+    if (showtranslat !== "y" && setoflocalmods.has(mod.nameofmod)) {
+        return "local";
     }
     if (domodpack !== "y" && mod.ismodpack) {
         return "modpack";
@@ -355,6 +368,8 @@ function showthemods(mods) {
     nonfuncmodscaught = 0;
     badrepmodscaught = 0;
     modpackmodscaught = 0;
+    translmoscaugh = 0;
+    aimodscaught = 0;
     const theplaceholdermodthing = document.getElementById('modtemplatee');
     if (!theplaceholdermodthing) {
         console.warn('erm wheres the template');
@@ -375,19 +390,22 @@ function showthemods(mods) {
     const shownsfw = currentparams.get('n');
     const domodpack = currentparams.get('mp');
     const hideaigenn = currentparams.get('ai');
+    const showtranslat = currentparams.get('loc');
     const dorev = currentparams.get('re');
     filteredmodscurrent = [];
     mods.forEach(mod => {
         if (exclusivesonly === "y" && !mod.isexclusive) {
             return;
         }
-        const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn);
+        const hidereason = modhider(mod, dounitfilters, showdepre, shownsfw, shownonf, domodpack, hideaigenn, showtranslat);
         if (hidereason === "unit") unitmodscaught += 1;
         else if (hidereason === "depre") deprecmodscaught += 1;
         else if (hidereason === "nsfw") nsfwmodscaught += 1;
         else if (hidereason === "nonfunc") nonfuncmodscaught += 1;
         else if (hidereason === "badrep") badrepmodscaught += 1;
         else if (hidereason === "modpack") modpackmodscaught += 1;
+        else if (hidereason === "local") translmoscaugh += 1;
+        else if (hidereason === "ai") aimodscaught += 1;
         const wouldnormallybehidden = hidereason !== null;
         const shouldhidenow = dorev === "y" ? !wouldnormallybehidden : wouldnormallybehidden;
         if (!shouldhidenow) {
@@ -398,8 +416,10 @@ function showthemods(mods) {
     document.getElementById("nsfwmodshid").textContent = nsfwmodscaught;
     document.getElementById("deprecmodshid").textContent = deprecmodscaught;
     document.getElementById("nonfunctmods").textContent = nonfuncmodscaught;
-    const modpackcountel = document.getElementById("modpackmodshid");
-    if (modpackcountel) modpackcountel.textContent = modpackmodscaught;
+    const countpacksssse = document.getElementById("modpackmodshid");
+    if (countpacksssse) countpacksssse.textContent = modpackmodscaught;
+    const countotherssss = document.getElementById("othercount");
+    if (countotherssss) countotherssss.textContent = translmoscaugh + aimodscaught + badrepmodscaught;
     modsshown = 0;
     if (sentobserv) {
         sentobserv.disconnect();
@@ -468,19 +488,21 @@ function dofilters() {
 (async function blablabla() {
     try {
         dofilters();
-        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws, aigenlist] = await Promise.all([
+        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws, aigenlist, locallist] = await Promise.all([
             getmods(),
             getunitacceptablelist(),
             getunitblacklist(),
             getbadrepblacklist(),
             getapprovedlis(),
             getexclusivesarr(),
-            getaigenlist()
+            getaigenlist(),
+            translatmodsslis()
         ]);
         whitelistofunitslop = dawhitelist;
         blacklistofunitslop = unitblacklist;
         blacklistofbadrep = badrepblacklist;
         setofapprovedmods = approvedlistofmo;
+        setoflocalmods = locallist;
         knownaigenmoddos = aigenlist.mods;
         knowncreatrswhousai = aigenlist.creators;
         const exclusivemods = exclusiraws.map(howexclusivelook);
