@@ -1,0 +1,60 @@
+{
+  "unit": [
+    "Dim1", "Hacker_Peasant", "ChouChou_s_Unit", "HiddenUnits", "HackerX", "TheDudeV1", "Scp173", "R2M",
+    "Random_Units", "TABSKingMod", "Zer0sUnits", "MedievalPlus", "MoreGirlsMod", "Powerful_units",
+    "DeflectGods", "Interesting_Units", "Missing_Content", "ChickenSoldiers", "WIP",
+    "Home_Style_Wendigo_Birthday", "MULTIVERSE", "BlackMod_Slime", "FlameHua_Birthday",
+    "Shining_Years_And_Days", "LegendsQuest", "JieBro", "AntMan", "ChickBeautiful", "SummonerCreator",
+    "RandomUnit", "BeybladeRevamped", "MoreRandomunits", "MySecrectUnits", "TABSGodMod",
+    "Intreasting_Units", "SuperBoxerPlus", "HARDBARDS", "DeflectShieldGod"
+  ],
+  "faction": [
+    "modernization_port_by_lil_zalupa", "MarvelPrototype", "MilitaryForces", "HeMoDingDing_Mod", "Holiday",
+    "Minecraft_in_TABS", "Zombiemod", "Cursed_Army_Of_Volumnia", "Middle_Earth_Ring", "WinterFest",
+    "Warhammer_40K", "Neon_faction", "Medieval2Spookified", "strange_thing", "Anime_Tabs", "DanJoMeShi",
+    "Chinese_myth", "ColonialFaction", "Expansionary", "Nomads", "Shuidimension", "Martial_Mod", "NarutoMod",
+    "AnimalKingdom", "JoJoMod", "PopCulture", "TerrariaMod", "Neon_Empire", "DuogeChinaMod", "SpyxFamily",
+    "kingdomRush", "ChineseDynasties", "Dark_Void_Faction", "Star_Wars_Civil_War_TASW",
+    "TASWGalacticCivilWar", "Rome", "MiddleEarthRing", "mythologymod", "SpookifiedMod", "modHalloweenUnits",
+    "Expansionary_SimpleModified"
+  ],
+  "qol": [
+    "FactionUnitSort", "FactionScroll", "Combat_Stats_Tracker", "UnlockAllSecrets", "Faction_UI_swipe",
+    "BetterHealthbars", "Better_UX", "BetterSpeed", "TABSCrashLog", "StayCombatFix", "Quick_Scene",
+    "RandomEnemyGenerator", "fixmod", "PSE_Fix", "FactionSelectorPatch", "DangeModUnlockAll", "StarStamped",
+    "Zeropurchase", "TeamColorChange", "DamageIndicator", "FPS_Counter_Mod", "SpookySort", "FailedLoadFix",
+    "KeepTheSecrets"
+  ],
+  "unit creator": [
+    "BaseModelSearch", "Runic_Spells", "Randomstuff", "Mirror_Color_Fix", "Crawl_Braised_Ducks_UC_Kit",
+    "TabsSkinColorMod", "Prop_Editor", "BeeCreative", "TechnicalItems", "ConfigurableWeaponData",
+    "MorePalette", "Custom_Palette", "Final_6", "AbilityCreator", "Azzymoof_Historical_Weapon_Pack",
+    "UnlimitedClothes", "Longrangebullet", "MoveEditor", "ColorFulUC", "Wasteland_Robots", "UCM",
+    "UnitCreator", "EasyEditor", "Stitched_Items", "ClothCollider", "Thanos", "MoveEditorTool"
+  ],
+  "performance": [
+    "More_FPS", "Quick_Boost", "Smelter", "Hide_The_Evidence", "Optimized",
+    "LogReducer"
+  ],
+  "other": [
+    "TABS_Cinematic_Overhaul", "ChineseTranslationForSomeMods", "CustomMusic", "CustomContent_RoguelikeMode_Patch",
+    "FantasyDefinitive", "AbyssalEyeMod", "Conquest_Mode_beta", "Online_Mod", "FourTeams", "ArabicLocalization",
+    "Lost_Territories_Preview", "Memento_Pueritiae", "RoguelikeMode", "Foreign_forces", "Zero", "VanillaPlus",
+    "MoreGraphics", "TGCore", "ApproachGod", "Mobility_Abilities", "Outline_Patch", "Reinforcements",
+    "Ultra_Tabs_Mod_Pack", "Peak_Tabs_Mod_Pack", "ProjectileForce", "WeaponBash", "Skill_Control_Fix",
+    "Zombification", "Tactics", "BreakableShields", "VelosityGivesPower", "GaussainProccess",
+    "TABS_Korean_Localization", "SkillContorl", "Submerged", "Unity_Explorer_Tree_Snapshooter", "Breakables",
+    "Unbound_Terrain", "GUM", "Map_Editing_extender", "FreeAim", "TABSUnlimited", "Mod_Pack_CAZUNOT",
+    "More_gift_genie", "Mod_Pack_GODENOT", "Unit_Appearance_Reset", "WesternHoliday", "Parkour", "Cinematic_Hit",
+    "UFoxSettingsCore", "SkyboxChange", "CASA", "CASA_Template", "Oldunitsstrengthened", "CommandMod", "KorkiaBT",
+    "NegativesModpack", "DaltsandMarquioUnitpack__READ_DESC", "BulletproofSKills", "UnitsSummoner",
+    "DaltsMODPACKforTABS", "MeleeDeflect", "the_potato_mans_mod", "DimNeon", "SwingTrail", "LivingSiege",
+    "RestInPieces", "NewYearMod", "FatMaker", "SLMACore", "GIFTS_for_April_Fools_Day_by_FhpSlime", "ForGlory",
+    "ModdingForDummies", "NavCheck", "SFT", "FreeForAll", "Bloodlust", "MapMayhem", "ToyBox", "WhereIsMyHat",
+    "NoVariation", "Chickenification", "ClubmasterMod", "tabs_Korean_translation", "Hackerblock",
+    "Ancientstrengthen", "MetalMetals", "Arabic", "IceG", "Lasagna", "Strengthenedtwooldmilitaryunits", "STAWE",
+    "RealValkyrie", "Negatives_Modpack", "MinecraftHurtVisuals", "UFoxLib", "RemovedContentMod", "FhpSLibrary",
+    "BreakHead", "UMT", "Rebalancing", "Infiniteblock", "YesTribalstrengthening", "Tribalstrengthening",
+    "IceAndFireBuff"
+  ]
+}
