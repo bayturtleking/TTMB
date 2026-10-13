@@ -18,6 +18,10 @@ let filteredmodscurrent = [];
 let modsshown = 0;
 const howmanycookies = 24;
 let sentobserv = null;
+let modcatsmaappp = new Map();
+let namesofcats = [];
+let showguestthecats = true;
+let lastcategoryshown = -1;
 const handpicked = new URLSearchParams(window.location.search).get('hand');
 const exclusivesonly = new URLSearchParams(window.location.search).get('excl');
 
@@ -40,7 +44,7 @@ if (exclusivesonly && exclusivesonly === "y") {
         }
     });
     document.querySelectorAll('.filtersepar').forEach(sidebabutto => {
-         sidebabutto.style.display = "none";
+        sidebabutto.style.display = "none";
     });
 }
 
@@ -169,6 +173,23 @@ async function getaigenlist() {
     }
 }
 
+async function getdacats() {
+    const caturlsaea = ['https://raw.githubusercontent.com/bayturtleking/TTMB-Whitelist/refs/heads/main/cate-for-each.json', 'https://cdn.jsdelivr.net/gh/bayturtleking/TTMB-Whitelist@main/cate-for-each.json'];
+    for (const categoryurl of caturlsaea) {
+        try {
+            const respon = await fetch(categoryurl);
+            if (!respon.ok) throw new Error('category get failll ' + respon.statusText);
+            const thekitties = await respon.json();
+            if (thekitties && typeof thekitties === 'object' && !Array.isArray(thekitties)) return thekitties;
+        } catch (e) {
+            console.warn('failed get category ', categoryurl, e);
+        }
+    }
+    return {};
+}
+function thecatindexedsda(mod) {
+    return mod.catedex;
+}
 const modcachescheme = 4;  // change whenever mod obj shape changes so it has to get new cache
 async function getmods() {
     const cachedcurrent = localStorage.getItem('modcachee');
@@ -330,6 +351,36 @@ function nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv) {
     if (!thenextpartt.length) return;
     const fraggrenade = document.createDocumentFragment();
     thenextpartt.forEach(mod => {
+        if (showguestthecats) {
+            const catedex = thecatindexedsda(mod);
+            if (catedex !== lastcategoryshown) {
+                const catshead = document.createElement('h2');
+                catshead.className = 'catshead';
+                catshead.style.gridColumn = '1 / -1';
+                catshead.dataset.catedex = catedex;
+                catshead.textContent = catedex < namesofcats.length ? namesofcats[catedex] : 'uncategorized';
+                const nextcatmodd = filteredmodscurrent.find(anothermod => thecatindexedsda(anothermod) > catedex);
+                if (nextcatmodd) {
+                    const nextcatedex = thecatindexedsda(nextcatmodd);
+                    const skipbuttonn = document.createElement('button');
+                    skipbuttonn.type = 'button';
+                    skipbuttonn.style = "display:block; margin-left:auto; margin-top:30px; margin-right:auto;";
+                    skipbuttonn.textContent = 'Skip to ' + (nextcatedex < namesofcats.length ? namesofcats[nextcatedex] : 'uncategorized');
+                    skipbuttonn.addEventListener('click', () => {
+                        const theselectoraa = '[data-catedex="' + nextcatedex + '"]';
+                        let nextheaderr = gridsofmodss.querySelector(theselectoraa);
+                        while (!nextheaderr && modsshown < filteredmodscurrent.length) {
+                            nextbatchofcookies(theplaceholdermodthing, gridsofmodss, eldiv);
+                            nextheaderr = gridsofmodss.querySelector(theselectoraa);
+                        }
+                        if (nextheaderr) nextheaderr.scrollIntoView({ behavior: 'smooth' });
+                    });
+                    catshead.appendChild(skipbuttonn);
+                }
+                fraggrenade.appendChild(catshead);
+                lastcategoryshown = catedex;
+            }
+        }
         const themodtouse = theplaceholdermodthing.cloneNode(true);
         themodtouse.id = '';
         themodtouse.style.display = '';
@@ -379,7 +430,7 @@ function showthemods(mods) {
     if (!gridsofmodss) return;
     theplaceholdermodthing.style.display = 'none';
     Array.from(gridsofmodss.children).forEach(childd => {
-        if (childd !== theplaceholdermodthing && childd.classList.contains('mod')) childd.remove();
+        if (childd !== theplaceholdermodthing && (childd.classList.contains('mod') || childd.classList.contains('catshead'))) childd.remove();
     });
     const oldsent = document.getElementById('thesentofmods');
     if (oldsent) oldsent.remove();
@@ -420,6 +471,16 @@ function showthemods(mods) {
     if (countpacksssse) countpacksssse.textContent = modpackmodscaught;
     const countotherssss = document.getElementById("othercount");
     if (countotherssss) countotherssss.textContent = translmoscaugh + aimodscaught + badrepmodscaught;
+    const nocatsparam = currentparams.get('nocats');
+    showguestthecats = !(nocatsparam === "y" || (nocatsparam !== "n" && localStorage.getItem("hidecatemodfilt") === "y"));
+    lastcategoryshown = -1;
+    if (showguestthecats) {
+        filteredmodscurrent = filteredmodscurrent.flatMap(mod => {
+            const lissssofcatedexess = modcatsmaappp.get(mod.nameofmod.toLowerCase()) || [namesofcats.length];
+            return lissssofcatedexess.map(eachcatedex => ({ ...mod, catedex: eachcatedex }));
+        });
+        filteredmodscurrent.sort((a, b) => thecatindexedsda(a) - thecatindexedsda(b));
+    }
     modsshown = 0;
     if (sentobserv) {
         sentobserv.disconnect();
@@ -453,7 +514,8 @@ function updatefilter() {
     const theparamss = new URLSearchParams(window.location.search);
     document.querySelectorAll('.dasidebarfilter').forEach(buttonnn => {
         const nameofp = buttonnn.dataset.param;
-        const isitact = nameofp === "ai" ? (localStorage.getItem("hideaimoddef") === "y" ? theparamss.get(nameofp) === "n" : theparamss.get(nameofp) === "y") : theparamss.get(nameofp) === "y";
+        const defaultison = nameofp === "ai" ? localStorage.getItem("hideaimoddef") === "y" : nameofp === "nocats" ? localStorage.getItem("hidecatemodfilt") === "y" : false;
+        const isitact = defaultison ? theparamss.get(nameofp) === "n" : theparamss.get(nameofp) === "y";
         buttonnn.classList.toggle('active', isitact);
         buttonnn.setAttribute('aria-pressed', isitact ? 'true' : 'false');
     });
@@ -462,7 +524,8 @@ function togglefilterrr(paramname) {
     const theurl = new URL(window.location.href);
     const currentval = theurl.searchParams.get(paramname);
     const hidaigenerByDefault = localStorage.getItem("hideaimoddef") === "y";
-    if (paramname === "ai" && hidaigenerByDefault) {
+    const hidecatsbydefault = localStorage.getItem("hidecatemodfilt") === "y";
+    if ((paramname === "ai" && hidaigenerByDefault) || (paramname === "nocats" && hidecatsbydefault)) {
         if (currentval === "n") {
             theurl.searchParams.delete(paramname);
         } else {
@@ -488,7 +551,7 @@ function dofilters() {
 (async function blablabla() {
     try {
         dofilters();
-        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws, aigenlist, locallist] = await Promise.all([
+        const [mods, dawhitelist, unitblacklist, badrepblacklist, approvedlistofmo, exclusiraws, aigenlist, locallist, categoriesraw] = await Promise.all([
             getmods(),
             getunitacceptablelist(),
             getunitblacklist(),
@@ -496,7 +559,8 @@ function dofilters() {
             getapprovedlis(),
             getexclusivesarr(),
             getaigenlist(),
-            translatmodsslis()
+            translatmodsslis(),
+            getdacats()
         ]);
         whitelistofunitslop = dawhitelist;
         blacklistofunitslop = unitblacklist;
@@ -505,6 +569,15 @@ function dofilters() {
         setoflocalmods = locallist;
         knownaigenmoddos = aigenlist.mods;
         knowncreatrswhousai = aigenlist.creators;
+        namesofcats = Object.keys(categoriesraw);
+        namesofcats.forEach((categoryname, catedex) => {
+            if (!Array.isArray(categoriesraw[categoryname])) return;
+            categoriesraw[categoryname].forEach(modname => {
+                const lowemodnamer = String(modname).toLowerCase();
+                if (!modcatsmaappp.has(lowemodnamer)) modcatsmaappp.set(lowemodnamer, []);
+                modcatsmaappp.get(lowemodnamer).push(catedex);
+            });
+        });
         const exclusivemods = exclusiraws.map(howexclusivelook);
         cacheformods = whereexclusivesgo(exclusivemods, mods);
         const showdadat = m => (m.whenmade ? new Date(m.whenmade).toISOString() : 'no date :(');

@@ -21,6 +21,25 @@ body {
     box-sizing: border-box;
 }
 
+.menubuttonn {
+    outline: none;
+    border: black 1px solid;
+    height: 80px;
+    width:300px;
+}
+
+.menubuttonn:hover {
+    border-color: cyan;
+}
+
+.catshead {
+    font-size: 3rem;
+}
+
+.catshead button {
+    font-size: 2rem;
+}
+
 button {
     margin-bottom: 15px;
     height: 60px;
@@ -34,7 +53,7 @@ button {
 }
 
 .bigbutton {
-    font-size: 2em;
+    font-size: 2.5em;
 }
 
 button:hover {
@@ -87,21 +106,21 @@ body.hasdasidebarbar .icon2 {
 }
 
 .modgridd.msiz-card .mod {
-    height:600px !important;
+    height: 600px !important;
 }
 
 .modgridd.msiz-card-s .mod {
-    height:400px !important;
+    height: 400px !important;
 }
 
 .modgridd.msiz-card .mod img {
-    width:320px;
-    height:320px;
+    width: 320px;
+    height: 320px;
 }
 
 .modgridd.msiz-card-s .mod img {
-    width:190px;
-    height:190px;
+    width: 190px;
+    height: 190px;
 }
 
 .modgridd.msiz-card .mod .moddescrip {
@@ -335,9 +354,9 @@ a {
 .nextto {
     display: flex;
     flex-direction: row;
-    width:max-content;
+    width: max-content;
     align-content: center;
-    padding:20px;
+    padding: 20px;
     padding-left: 50px;
     padding-right: 50px;
 }

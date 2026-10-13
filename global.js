@@ -51,6 +51,11 @@ function settingshow() {
     const hideaimoddef = localStorage.getItem("hideaimoddef") === "y";
     const hideaimoddefchec = document.getElementById("hideaimoddef");
     if (hideaimoddefchec) hideaimoddefchec.checked = hideaimoddef;
+    const hidecatemoddef = localStorage.getItem("hidecatemodfilt") === "y";
+    const hidecatemoddefchec = document.getElementById("hidecatemodfilt");
+    if (hidecatemoddefchec) hidecatemoddefchec.checked = hidecatemoddef;
+    const catefilt = document.getElementById("filtrforcates");
+    if (catefilt) catefilt.textContent = hidecatemoddef ? "Enable categories" : "Disable categories";
     const aifilt = document.getElementById("filtrforaimod");
     const hidefilttex = document.getElementById("filterhidesec");
     const includfilttex = document.getElementById("filterincludesec");
@@ -99,13 +104,21 @@ function settingscri_aimoddef() {
     localStorage.setItem("hideaimoddef", hideaimoddefchec.checked ? "y" : "n");
     settingshow();
 }
+
+function settingscri_catemoddef() {
+    const hidecatemoddefchec = document.getElementById("hidecatemodfilt");
+    localStorage.setItem("hidecatemodfilt", hidecatemoddefchec.checked ? "y" : "n");
+    settingshow();
+}
 showdarkm();
 settingshow();
 const moddesccheckb = document.getElementById("showmoddescrip");
 const modmakbox = document.getElementById("showmodauth");
 const ttmbbuttonbigchec = document.getElementById("ttmbbuttonbig");
 const hideaimoddefchec = document.getElementById("hideaimoddef");
+const hidecatemoddefchec = document.getElementById("hidecatemodfilt");
 if (moddesccheckb) moddesccheckb.addEventListener("change", settingscri_moddesc);
 if (modmakbox) modmakbox.addEventListener("change", settingscri_modmaker);
 if (ttmbbuttonbigchec) ttmbbuttonbigchec.addEventListener("change", settingscri_ttmbbuttonbig);
 if (hideaimoddefchec) hideaimoddefchec.addEventListener("change", settingscri_aimoddef);
+if (hidecatemoddefchec) hidecatemoddefchec.addEventListener("change", settingscri_catemoddef);
