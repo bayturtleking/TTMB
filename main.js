@@ -19,6 +19,7 @@ let modsshown = 0;
 const howmanycookies = 24;
 let sentobserv = null;
 let modcatsmaappp = new Map();
+let modcatsexact = new Map();
 let namesofcats = [];
 let showguestthecats = true;
 let lastcategoryshown = -1;
@@ -476,7 +477,7 @@ function showthemods(mods) {
     lastcategoryshown = -1;
     if (showguestthecats) {
         filteredmodscurrent = filteredmodscurrent.flatMap(mod => {
-            const lissssofcatedexess = modcatsmaappp.get(mod.nameofmod.toLowerCase()) || [namesofcats.length];
+            const lissssofcatedexess = modcatsexact.get(mod.nameofmod) || modcatsmaappp.get(mod.nameofmod.toLowerCase()) || [namesofcats.length];
             return lissssofcatedexess.map(eachcatedex => ({ ...mod, catedex: eachcatedex }));
         });
         filteredmodscurrent.sort((a, b) => thecatindexedsda(a) - thecatindexedsda(b));
@@ -575,7 +576,12 @@ function dofilters() {
             categoriesraw[categoryname].forEach(modname => {
                 const lowemodnamer = String(modname).toLowerCase();
                 if (!modcatsmaappp.has(lowemodnamer)) modcatsmaappp.set(lowemodnamer, []);
-                modcatsmaappp.get(lowemodnamer).push(catedex);
+                const lowerarr = modcatsmaappp.get(lowemodnamer);
+                if (!lowerarr.includes(catedex)) lowerarr.push(catedex);
+                const exactname = String(modname);
+                if (!modcatsexact.has(exactname)) modcatsexact.set(exactname, []);
+                const exactarr = modcatsexact.get(exactname);
+                if (!exactarr.includes(catedex)) exactarr.push(catedex);
             });
         });
         const exclusivemods = exclusiraws.map(howexclusivelook);
