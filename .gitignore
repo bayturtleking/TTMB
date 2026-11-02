@@ -3,3 +3,7 @@
 .env.*
 !.env.example
 .vs
+.node_modules
+node_modules/
+.vs/
+.gitignore
