@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TTMB: About</title>
+    <link rel="icon" href="/favicon.ico">
+    <meta property="og:title" content="About TTMB">
+    <meta property="og:description" content="An introduction to TTMB, why it was made, and how you can contribute!">
+    <meta property="og:url" content="https://tabs.turtlewave.dev/about">
+    <meta name="theme-color" content="#0FECFC">
+    <link href="/index.css" rel="stylesheet">
+    <style>
+        .daaboustuff {
+            box-sizing: border-box;
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .dabran {
+            width: min(1200px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        .copydaabvou {
+            width: 100%;
+            text-align: left;
+            line-height: 1.65;
+        }
+
+        .copydaabvou h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .copydaabvou .intro {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+
+        .copydaabvou section {
+            margin-top: 28px;
+        }
+
+        .copydaabvou h2 {
+            margin-bottom: 6px;
+        }
+
+        .copydaabvou p {
+            margin-top: 6px;
+        }
+
+        @media (max-width: 700px) {
+            .daaboustuff {
+                width: calc(100% - 24px);
+                padding: 24px;
+            }
+
+            .dabran {
+                width: calc(100% - 24px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="icon2 dabran">
+        <img src="/assets/Icon128.png" alt="">
+        <h1 class="icon">T T M B</h1>
+    </div>
+    <main class="content daaboustuff">
+        <article class="copydaabvou">
+            <header>
+                <h1 id="titleofpag">About TTMB</h1>
+                <p class="intro">Hi, I'm "Turtle", the creator and primary maintainer of Turtle's TABS Mod Browser
+                    (TTMB).</p>
+            </header>
+
+            <section>
+                <h2 id="whyweexist">Why is TTMB a thing?</h2>
+                <p>
+                    I made TTMB because of a community complaint about the Thunderstore site: we can not control it.
+                    There were many mods deemed low-quality that kept being published and we had no control over it.
+                    So, this was made as a small solution: we don't have to stop these mods from being published.
+                    Instead, we can give the user control over what mods they want to see. Since then, the site and idea
+                    has grown into what TTMB is now: a user-orientated, privacy-safe mod browser giving only what you
+                    want to see!
+                </p>
+            </section>
+
+            <section>
+                <h2 id="howdastuffworks">How the filters work</h2>
+                <p>
+                    TTMB uses a mix of automatic detection and manual review & filter lists..
+                    None of our filters are perfect, and we understand that.
+                    That is why the TABS modding community is reached out to for almost every decision made, regardless
+                    of size.
+                </p>
+            </section>
+
+            <section>
+                <h2 id="wheremodscome">Where do the mods come from?</h2>
+                <p>
+                    TTMB uses Thunderstore API data to show all the same mods Thunderstore.io does (including my mods!) but with a more privacy-safe (no tracking or accounts), customizable, mod browsing experience with filters and categorized mods. We also have a few "TTMB Exclusive" mods, which are mods only available on TTMB because of certain situations such as not being permitted on other platforms despite being useful and harmless.
+                </p>
+            </section>
+
+            <section>
+                <h2 id="community">Help the Community!</h2>
+                <p>
+                    I maintain TTMB as a one man project, but the GitHub is open! You can make contributions and make it
+                    better yourself.
+                    You can suggest improvements or contribute to the site on the
+                    <a href="https://github.com/bayturtleking/TTMB/">TTMB GitHub repo</a>.
+                </p>
+                <p>
+                    The filter lists and automatic detection blacklists/whitelists are in a
+                    <a href="https://github.com/bayturtleking/TTMB-whitelist/">separate repo</a>,
+                    so almost anyone can help update the allowlists, blocklists, and manually curated filters without
+                    needing to touch any code. (JSON isn't really code, right?)
+                </p>
+            </section>
+
+            <section>
+                <h2 id="appealurmoddig">Appealing Filter for mod</h2>
+                <p>
+                    If you think a mod you made has been negatively impacted by TTMB or put into incorrect categories,
+                    filters, or blacklists, use the
+                    <a href="https://github.com/bayturtleking/TTMB-whitelist/issues">GitHub issue templates</a>
+                    to explain it and appeal the filters.
+                </p>
+            </section>
+        </article>
+    </main>
+    <script defer src="/global.js"></script>
+</body>
+
+</html>
